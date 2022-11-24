@@ -341,7 +341,6 @@ class _signupState extends State<signup> {
                     });
                   }
                   else {
-
                     showDialog(context: context, builder: (context) {
                       return SimpleDialog(
                         children: [
