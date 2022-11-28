@@ -42,6 +42,7 @@ dependencies:
   http:
   dio:
   fluttertoast:
+  awesome_dialog:
 
 dev_dependencies:
   flutter_test:

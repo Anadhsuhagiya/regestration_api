@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -71,22 +72,23 @@ class _signupState extends State<signup> {
                               onTap: () async {
                                 Navigator.pop(context);
 
-                                final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+                                final XFile? photo = await _picker.pickImage(
+                                    source: ImageSource.camera);
                                 setState(() {
                                   if (photo != null) {
                                     imagePath = photo.path;
-                                   photoerror = true;
+                                    photoerror = true;
                                   }
                                 });
                                 print(imagePath);
-
                               },
                             ),
                             ListTile(
                               title: Text("Gallary"),
                               onTap: () async {
                                 Navigator.pop(context);
-                                final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
+                                final XFile? photo = await _picker.pickImage(
+                                    source: ImageSource.gallery);
 
                                 setState(() {
                                   if (photo != null) {
@@ -95,7 +97,6 @@ class _signupState extends State<signup> {
                                   }
                                 });
                                 print(photo!.path);
-
                               },
                             ),
                           ],
@@ -123,161 +124,164 @@ class _signupState extends State<signup> {
                             fit: BoxFit.fill)),
                   )),
               Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextField(
-                      onChanged: (value) {
-                        print(value);
-                        if (nameerror) {
-                          if (value.isNotEmpty) {
-                            nameerror = false;
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  onChanged: (value) {
+                    print(value);
+                    if (nameerror) {
+                      if (value.isNotEmpty) {
+                        nameerror = false;
+                        setState(() {
+
+                        });
+                      }
+                    }
+                  },
+                  controller: name,
+                  keyboardType: TextInputType.text,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: TextStyle(color: Color(0xff040065)),
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color(0xff040065), width: 3)),
+                      border: OutlineInputBorder(),
+                      hintText: "Enter Name",
+                      labelText: "Name",
+                      labelStyle: TextStyle(color: Color(0xff040065)),
+                      errorText: nameerror
+                          ? "Please Enter Valid Name"
+                          : null,
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Color(0xff040065),
+                      )),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  onChanged: (value) {
+                    print(value);
+                    if (emailerror) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          emailerror = false;
+                        });
+                      }
+                    }
+                  },
+                  controller: email,
+                  keyboardType: TextInputType.text,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: TextStyle(color: Color(0xff040065)),
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color(0xff040065), width: 3)),
+                      border: OutlineInputBorder(),
+                      hintText: "Enter Email Address",
+                      labelText: "Email",
+                      labelStyle: TextStyle(color: Color(0xff040065)),
+                      errorText:
+                      emailerror ? emailmsg : null,
+                      prefixIcon: Icon(
+                        Icons.email_rounded,
+                        color: Color(0xff040065),
+                      )),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  onChanged: (value) {
+                    textLength = value.length;
+                    if (contacterror) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          contacterror = false;
+                        });
+                      }
+                    }
+                  },
+                  controller: contact,
+                  keyboardType: TextInputType.phone,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: TextStyle(color: Color(0xff040065)),
+                  maxLength: 10,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xff040065))),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color(0xff040065), width: 3)),
+                      counter: Offstage(),
+                      suffixText:
+                      '${textLength.toString()}/${maxLength.toString()}',
+                      hintText: "Enter Your Contact",
+                      labelText: "Contact",
+                      labelStyle: TextStyle(color: Color(0xff040065)),
+                      errorText:
+                      contacterror ? contactmsg : null,
+                      prefixIcon: Icon(
+                        Icons.phone,
+                        color: Color(0xff040065),
+                      )),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, bottom: 10, top: 3),
+                child: TextField(
+                  onChanged: (value) {
+                    print(value);
+                    if (passerror) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          passerror = false;
+                        });
+                      }
+                    }
+                  },
+                  controller: Password,
+                  obscureText: hidepass,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: TextStyle(color: Color(0xff040065)),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color(0xff040065), width: 3)),
+                      border: OutlineInputBorder(),
+                      hintText: "Enter Your Password",
+                      labelText: "Password",
+                      labelStyle: TextStyle(color: Color(0xff040065)),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            hidepass = !hidepass;
                             setState(() {
 
                             });
-                          }
-                        }
-                      },
-                      controller: name,
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(color: Color(0xff040065)),
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xff040065), width: 3)),
-                          border: OutlineInputBorder(),
-                          hintText: "Enter Name",
-                          labelText: "Name",
-                          labelStyle: TextStyle(color: Color(0xff040065)),
-                          errorText: nameerror
-                              ? "Please Enter Valid Name"
-                              : null,
-                          prefixIcon: Icon(
-                            Icons.person,
+                          },
+                          icon: hidepass
+                              ? Icon(
+                            Icons.visibility,
                             color: Color(0xff040065),
+                          )
+                              : Icon(
+                            Icons.visibility_off,
+                            color: Color(0xff676767),
                           )),
-                    ),
-                  ),
-              Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextField(
-                      onChanged: (value) {
-                        print(value);
-                        if (emailerror) {
-                          if (value.isNotEmpty) {
-                            setState(() {
-                              emailerror = false;
-                            });
-                          }
-                        }
-                      },
-                      controller: email,
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(color: Color(0xff040065)),
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xff040065), width: 3)),
-                          border: OutlineInputBorder(),
-                          hintText: "Enter Email Address",
-                          labelText: "Email",
-                          labelStyle: TextStyle(color: Color(0xff040065)),
-                          errorText:
-                          emailerror ? emailmsg : null,
-                          prefixIcon: Icon(
-                            Icons.email_rounded,
-                            color: Color(0xff040065),
-                          )),
-                    ),
-                  ),
-              Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextField(
-                      onChanged: (value) {
-                        textLength = value.length;
-                        if (contacterror) {
-                          if (value.isNotEmpty) {
-                            setState(() {
-                              contacterror = false;
-                            });
-                          }
-                        }
-                      },
-                      controller: contact,
-                      keyboardType: TextInputType.phone,
-                      style: TextStyle(color: Color(0xff040065)),
-                      maxLength: 10,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xff040065))),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xff040065), width: 3)),
-                          counter: Offstage(),
-                          suffixText:
-                          '${textLength.toString()}/${maxLength.toString()}',
-                          hintText: "Enter Your Contact",
-                          labelText: "Contact",
-                          labelStyle: TextStyle(color: Color(0xff040065)),
-                          errorText:
-                          contacterror ? contactmsg : null,
-                          prefixIcon: Icon(
-                            Icons.phone,
-                            color: Color(0xff040065),
-                          )),
-                    ),
-                  ),
-              Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, bottom: 10, top: 3),
-                  child: TextField(
-                      onChanged: (value) {
-                        print(value);
-                        if (passerror) {
-                          if (value.isNotEmpty) {
-                            setState(() {
-                              passerror = false;
-                            });
-                          }
-                        }
-                      },
-                      controller: Password,
-                      obscureText: hidepass,
-                      style: TextStyle(color: Color(0xff040065)),
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xff040065), width: 3)),
-                          border: OutlineInputBorder(),
-                          hintText: "Enter Your Password",
-                          labelText: "Password",
-                          labelStyle: TextStyle(color: Color(0xff040065)),
-                          suffixIcon: IconButton(
-                              onPressed: () {
-                                hidepass = !hidepass;
-                                setState(() {
-
-                                });
-                              },
-                              icon: hidepass
-                                  ? Icon(
-                                Icons.visibility,
-                                color: Color(0xff040065),
-                              )
-                                  : Icon(
-                                Icons.visibility_off,
-                                color: Color(0xff676767),
-                              )),
-                          errorText: passerror ? passmsg : null,
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            color: Color(0xff040065),
-                          )),
-                    ),
-                  ),
+                      errorText: passerror ? passmsg : null,
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Color(0xff040065),
+                      )),
+                ),
+              ),
 
               InkWell(
                 onTap: () async {
-
                   String Name = name.text;
                   String Phone = contact.text;
                   String Email = email.text;
@@ -288,13 +292,13 @@ class _signupState extends State<signup> {
                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(Email);
                   bool passValid =
-                  RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                  RegExp(
+                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
                       .hasMatch(pass);
 
                   String link = "https://flutteranadh.000webhostapp.com/register.php";
 
-                  if(photoerror==false)
-                  {
+                  if (photoerror == false) {
                     Fluttertoast.showToast(
                         msg: "Please Insert Profile Image",
                         toastLength: Toast.LENGTH_SHORT,
@@ -367,52 +371,71 @@ class _signupState extends State<signup> {
                     },);
 
                     DateTime dt = DateTime.now();
-                    String imageName = "$Name${dt.year}${dt.month}${dt.day}${dt.hour}${dt.minute}${dt.second}";
+                    String imageName = "$Name${dt.year}${dt.month}${dt.day}${dt
+                        .hour}${dt.minute}${dt.second}";
 
                     var formData = FormData.fromMap({
                       'name': Name,
                       'email': Email,
                       'phone': Phone,
                       'pass': pass,
-                      'file': await MultipartFile.fromFile(imagePath, filename: imageName),
+                      'file': await MultipartFile.fromFile(
+                          imagePath, filename: imageName),
                     });
                     var response = await Dio().post(link, data: formData);
 
                     Navigator.pop(context);
 
-                    if(response.statusCode == 200)
-                      {
-                        print("Response : ${response.data}");
+                    if (response.statusCode == 200) {
+                      print("Response : ${response.data}");
 
-                        Map map = jsonDecode(response.data);
+                      Map map = jsonDecode(response.data);
 
-                        int result = map['result'];
+                      int result = map['result'];
 
-                        print(result);
-                        if(result == 0)
-                          {
-                            print("Try Again");
-                          }
-                        else if(result == 1)
-                          {
-                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                               return Login();
-                             },));
-                          }
+                      print(result);
+                      if (result == 0) {
+                        print("Try Again");
                       }
-
-                    //http for small data send to php file
-                    // var url = Uri.parse(link);
-                    // var response = await http.post(url, body: m);
-                    //
-                    // Navigator.pop(context);
-                    //
-                    // print('Response status: ${response.statusCode}');
-                    //
-                    // if (response.statusCode == 200) {
-                    //   print('Response body: ${response.body}');
-                    // }
+                      else if (result == 2) {
+                        AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.error,
+                            animType: AnimType.bottomSlide,
+                            title: 'Error',
+                            desc: 'Already User Exist with This Email',
+                            btnOkOnPress: () {},
+                            )..show();
+                  // Fluttertoast.showToast(
+                  //     msg: "Already User Exist with This Email",
+                  //     toastLength: Toast.LENGTH_SHORT,
+                  //     gravity: ToastGravity.BOTTOM,
+                  //     timeInSecForIosWeb: 1,
+                  //     backgroundColor: Colors.red,
+                  //     textColor: Colors.white,
+                  //     fontSize: 15.0
+                  // );
                   }
+                  else if(result == 1)
+                  {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                  return Login();
+                  },));
+                  }
+                }
+
+                  //http for small data send to php file
+                  // var url = Uri.parse(link);
+                  // var response = await http.post(url, body: m);
+                  //
+                  // Navigator.pop(context);
+                  //
+                  // print('Response status: ${response.statusCode}');
+                  //
+                  // if (response.statusCode == 200) {
+                  //   print('Response body: ${response.body}');
+                  // }
+                }
                 },
                 child: Container(
                   height: 50,
@@ -440,7 +463,8 @@ class _signupState extends State<signup> {
               Center(
                   child: TextButton(
                       onPressed: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) {
                           return Login();
                         },));
                       },
