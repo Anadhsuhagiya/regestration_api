@@ -293,7 +293,7 @@ class _signupState extends State<signup> {
                       .hasMatch(Email);
                   bool passValid =
                   RegExp(
-                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')
                       .hasMatch(pass);
 
                   String link = "https://flutteranadh.000webhostapp.com/register.php";

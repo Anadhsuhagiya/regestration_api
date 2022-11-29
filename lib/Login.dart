@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:regestration_api/home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -9,7 +14,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  TextEditingController email = TextEditingController();
+  TextEditingController Username = TextEditingController();
   TextEditingController Password = TextEditingController();
 
   bool emailerror = false;
@@ -58,7 +63,7 @@ class _LoginState extends State<Login> {
                         }
                       }
                     },
-                    controller: email,
+                    controller: Username,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -103,6 +108,9 @@ class _LoginState extends State<Login> {
                         suffixIcon: IconButton(
                             onPressed: () {
                               hidepass = !hidepass;
+                              setState(() {
+
+                              });
                             },
                             icon: hidepass
                                 ? Icon(
@@ -122,31 +130,89 @@ class _LoginState extends State<Login> {
               ),
 
               InkWell(
-                onTap: () {
-                  String Email = email.text;
-                  String pass = Password.text;
+                onTap: () async {
+                  String username = Username.text;
+                  String password = Password.text;
 
-                  bool emailValid = RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(Email);
-                  bool passValid = RegExp(
-                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-                      .hasMatch(pass);
+                  if (username.isEmpty) {
+                    emailerror = true;
+                    emailmsg = "Enter Uesrname ";
+                    setState(() {
 
-                  if (Email.isEmpty) {
-                    emailerror = true;
-                    emailmsg = "Enter Email Address";
-                  } else if (!emailValid) {
-                    emailerror = true;
-                    emailmsg = "Please Enter Valid Email Address";
-                  }else if (pass.isEmpty) {
+                    });
+                  } else if (password.isEmpty) {
                     passerror = true;
                     passmsg = "Enter your password";
-                  } else if (!passValid) {
-                    passerror = true;
-                    passmsg = "Please Enter Valid Formatted password";
-                  } else {
+                    setState(() {
 
+                    });
+                  } else {
+                    showDialog(context: context, builder: (context) {
+                      return SimpleDialog(
+                        children: [
+                          Container(
+                            height: 60,
+                            child: ListTile(
+                              leading: Container(
+                                height: 45,
+                                width: 45,
+                                alignment: Alignment.center,
+                                child: CircularProgressIndicator(),
+                              ),
+                              title: Text(
+                                "Please Wait ...",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    },);
+
+                    String api = 'https://flutteranadh.000webhostapp.com/login.php?username=$username&password=$password';
+
+                    var response = await Dio().get(api);
+                    print("response :- $response");
+
+                    Navigator.pop(context);
+
+                    if(response.statusCode == 200){
+                      Map map = jsonDecode(response.data);
+
+                      int result = map['result'];
+                      print("result :- $result");
+
+                      if(result == 0)
+                        {
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.error,
+                            animType: AnimType.bottomSlide,
+                            title: 'Error',
+                            desc: 'Username or Password is Invalid',
+                            btnOkOnPress: () {},
+                          )..show();
+                        }
+                      else
+                        {
+                          Map data = map['data'];
+
+                          String id = data['id'];
+                          String name = data['name'];
+                          String email = data['email'];
+                          String phone = data['phone'];
+                          String password = data['password'];
+                          String imagepath = data['photo'];
+                          print(data);
+
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                            return home(id,name,email,phone,password,imagepath);
+                          },));
+                        }
+                    }
                   }
                 },
                 child: Container(
