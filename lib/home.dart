@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:regestration_api/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class home extends StatefulWidget {
-
-  String id;
-  String name;
-  String email;
-  String phone;
-  String password;
-  String imagepath;
-
-  home(this.id, this.name, this.email, this.phone, this.password, this.imagepath);
+  //
+  // String id;
+  // String name;
+  // String email;
+  // String phone;
+  // String password;
+  // String imagepath;
+  //
+  // home(this.id, this.name, this.email, this.phone, this.password, this.imagepath);
 
 
   @override
@@ -17,6 +19,34 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+
+  String? ID;
+  String? NAME;
+  String? EMAIL;
+  String? PHONE;
+  String? PASSWORD;
+  String? IMAGEPATH;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    initpref();
+  }
+
+  initpref() async {
+    Model.prefs!.setBool('login', true);
+    print(Model.prefs!.getBool('login'));
+
+    ID = Model.prefs!.getString('id');
+    NAME = Model.prefs!.getString('Name');
+    EMAIL = Model.prefs!.getString('Email');
+    PHONE = Model.prefs!.getString('Phone');
+    PASSWORD = Model.prefs!.getString('Password');
+    IMAGEPATH = Model.prefs!.getString('Photo');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,12 +62,12 @@ class _homeState extends State<home> {
 
       body: Column(
         children: [
-          Text("${widget.id}"),
-          Text("${widget.name}"),
-          Text("${widget.email}"),
-          Text("${widget.phone}"),
-          Text("${widget.password}"),
-          Text("${widget.imagepath}"),
+          Text("$ID"),
+          Text("$NAME"),
+          Text("$EMAIL"),
+          Text("$PHONE"),
+          Text("$PASSWORD"),
+          Text("$IMAGEPATH"),
         ],
       ),
     );

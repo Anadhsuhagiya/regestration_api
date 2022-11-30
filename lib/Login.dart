@@ -4,6 +4,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:regestration_api/home.dart';
+import 'package:regestration_api/model.dart';
+import 'package:regestration_api/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -23,6 +26,19 @@ class _LoginState extends State<Login> {
 
   String emailmsg = "";
   String passmsg = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    pref();
+  }
+
+  pref() async {
+    Model.prefs = await SharedPreferences.getInstance();
+
+    Model.prefs!.setBool('login', false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,8 +224,15 @@ class _LoginState extends State<Login> {
                           String imagepath = data['photo'];
                           print(data);
 
+                          Model.prefs!.setString('id', id);
+                          Model.prefs!.setString('Name', name);
+                          Model.prefs!.setString('Email', email);
+                          Model.prefs!.setString('Phone', phone);
+                          Model.prefs!.setString('Password', password);
+                          Model.prefs!.setString('Photo', imagepath);
+
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                            return home(id,name,email,phone,password,imagepath);
+                            return home();
                           },));
                         }
                     }
@@ -238,6 +261,18 @@ class _LoginState extends State<Login> {
                 ),
               ),
 
+              Center(
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) {
+                          return signup();
+                        },));
+                      },
+                      child: Text(
+                        "Do You Have no any Account ? Click Here",
+                        style: TextStyle(fontSize: 20),
+                      ))),
               Container(
                 height: 17,
                 width: double.infinity,

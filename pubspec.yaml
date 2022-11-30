@@ -43,6 +43,7 @@ dependencies:
   dio:
   fluttertoast:
   awesome_dialog:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:regestration_api/Login.dart';
+import 'package:regestration_api/home.dart';
 import 'package:regestration_api/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'model.dart';
 
 void main()
 {
@@ -23,20 +28,36 @@ class _splashState extends State<splash> {
         // TODO: implement initState
         super.initState();
         go();
-
+        pref();
     }
 
 
     go() async {
-
         await Future.delayed(Duration(seconds: 5));
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) {
-                return signup();
-            },
-        ));
+
+        if(Model.prefs!.getBool('login') == true)
+            {
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return home();
+                },
+              ));
+            }
+        else
+            {
+                Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) {
+                        return Login();
+                    },
+                ));
+            }
     }
 
+    pref() async {
+        Model.prefs = await SharedPreferences.getInstance();
+
+        Model.prefs!.setBool('login', false);
+    }
     @override
     Widget build(BuildContext context) {
         return Scaffold(
