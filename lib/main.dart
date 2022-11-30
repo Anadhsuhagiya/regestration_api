@@ -28,14 +28,18 @@ class _splashState extends State<splash> {
         // TODO: implement initState
         super.initState();
         go();
-        pref();
     }
 
 
     go() async {
+
+        Model.prefs = await SharedPreferences.getInstance();
+
         await Future.delayed(Duration(seconds: 5));
 
-        if(Model.prefs!.getBool('login') == true)
+        bool status = Model.prefs!.getBool('login') ?? false;
+
+        if(status == true)
             {
               Navigator.pushReplacement(context, MaterialPageRoute(
                 builder: (context) {
@@ -51,12 +55,6 @@ class _splashState extends State<splash> {
                     },
                 ));
             }
-    }
-
-    pref() async {
-        Model.prefs = await SharedPreferences.getInstance();
-
-        Model.prefs!.setBool('login', false);
     }
     @override
     Widget build(BuildContext context) {

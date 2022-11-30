@@ -27,18 +27,6 @@ class _LoginState extends State<Login> {
   String emailmsg = "";
   String passmsg = "";
 
-  @override
-  void initState() {
-    super.initState();
-
-    pref();
-  }
-
-  pref() async {
-    Model.prefs = await SharedPreferences.getInstance();
-
-    Model.prefs!.setBool('login', false);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,6 +202,8 @@ class _LoginState extends State<Login> {
                         }
                       else
                         {
+                          await Model.prefs!.setBool('login', true);
+
                           Map data = map['data'];
 
                           String id = data['id'];
@@ -224,12 +214,12 @@ class _LoginState extends State<Login> {
                           String imagepath = data['photo'];
                           print(data);
 
-                          Model.prefs!.setString('id', id);
-                          Model.prefs!.setString('Name', name);
-                          Model.prefs!.setString('Email', email);
-                          Model.prefs!.setString('Phone', phone);
-                          Model.prefs!.setString('Password', password);
-                          Model.prefs!.setString('Photo', imagepath);
+                          await Model.prefs!.setString('id', id);
+                          await Model.prefs!.setString('Name', name);
+                          await Model.prefs!.setString('Email', email);
+                          await Model.prefs!.setString('Phone', phone);
+                          await Model.prefs!.setString('Password', password);
+                          await Model.prefs!.setString('Photo', imagepath);
 
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                             return home();

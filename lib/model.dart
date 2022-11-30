@@ -4,5 +4,4 @@ class Model
 {
   static SharedPreferences? prefs;
 
-
 }
