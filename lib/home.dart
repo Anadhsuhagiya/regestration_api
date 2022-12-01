@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
@@ -336,7 +335,6 @@ class _homeState extends State<home> {
                           desc: 'Name Updated Successfully',
                           btnOkOnPress: () {},
                         )..show();
-
                       }
                     }
                   }
