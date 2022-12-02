@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:regestration_api/HOME.dart';
 import 'package:regestration_api/Login.dart';
 import 'package:regestration_api/rename.dart';
 import 'package:regestration_api/signup.dart';
@@ -36,6 +37,7 @@ class _splashState extends State<splash> {
     await Future.delayed(Duration(seconds: 5));
 
     bool status = Model.prefs!.getBool('login') ?? false;
+    int stat = Model.prefs!.getInt('home') ?? 0;
 
     if (status == true) {
       Navigator.pushReplacement(context, MaterialPageRoute(
@@ -43,7 +45,17 @@ class _splashState extends State<splash> {
           return rename();
         },
       ));
-    } else {
+    }
+
+    else if(stat == 1)
+      {
+        Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) {
+            return HOME();
+          },
+        ));
+      }
+    else {
       Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
           return Login();

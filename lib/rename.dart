@@ -10,6 +10,8 @@ import 'package:regestration_api/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'HOME.dart';
+
 class rename extends StatefulWidget {
   //
   // String id;
@@ -401,7 +403,12 @@ class _renameState extends State<rename> {
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await Model.prefs!.setInt('home', 1);
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                            return HOME();
+                          },));
+                        },
                         child: Text(
                           "Home",
                           style: TextStyle(
