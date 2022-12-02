@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:regestration_api/Login.dart';
-import 'package:regestration_api/home.dart';
+import 'package:regestration_api/rename.dart';
 import 'package:regestration_api/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,7 +40,7 @@ class _splashState extends State<splash> {
     if (status == true) {
       Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
-          return home();
+          return rename();
         },
       ));
     } else {

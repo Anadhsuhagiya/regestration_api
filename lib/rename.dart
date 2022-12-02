@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_haptic/haptic.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
 import 'package:getwidget/components/drawer/gf_drawer.dart';
 import 'package:getwidget/components/drawer/gf_drawer_header.dart';
@@ -9,7 +10,7 @@ import 'package:regestration_api/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class home extends StatefulWidget {
+class rename extends StatefulWidget {
   //
   // String id;
   // String name;
@@ -18,13 +19,13 @@ class home extends StatefulWidget {
   // String password;
   // String imagepath;
   //
-  // home(this.id, this.name, this.email, this.phone, this.password, this.imagepath);
+  // rename(this.id, this.name, this.email, this.phone, this.password, this.imagepath);
 
   @override
-  State<home> createState() => _homeState();
+  State<rename> createState() => _renameState();
 }
 
-class _homeState extends State<home> {
+class _renameState extends State<rename> {
   String ID = "";
   String NAME = "";
   String EMAIL = "";
@@ -83,80 +84,99 @@ class _homeState extends State<home> {
                   ),
                 ),
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: ShapeDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                Color(0xff040065),
-                                Color(0xff42b3ff),
-                              ],
-                            ),
-                            shape: CircleBorder(),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://flutteranadh.000webhostapp.com/$IMAGEPATH"),fit: BoxFit.fill)),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 80,
+                      width: 80,
+                      decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              Color(0xff040065),
+                              Color(0xff42b3ff),
+                            ],
+                          ),
+                          shape: CircleBorder(),
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://flutteranadh.000webhostapp.com/$IMAGEPATH"),
+                              fit: BoxFit.fill)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        "$NAME",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text("$NAME",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),
-                      ),
-                      Text("$EMAIL",style: TextStyle(color: Colors.white,fontSize: 14),),
-                    ],
+                    ),
+                    Text(
+                      "$EMAIL",
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  onTap: () {},
+                  title: Text(
+                    "Rate Us",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-              ),
-              Card(
-                child: ListTile(
-                  onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                      return home();
-                    },));
-                  },
-                  title: Text("Home",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                  leading: Icon(Icons.home,color: Colors.black),
+                  leading: Icon(Icons.star, color: Colors.black),
                 ),
               ),
               Card(
                 child: ListTile(
-                  onTap: () {
-
-                  },
-                  title: Text("Rate Us",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                  leading: Icon(Icons.star,color: Colors.black),
+                  onTap: () {},
+                  title: Text(
+                    "Setting",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  leading: Icon(Icons.settings, color: Colors.black),
                 ),
               ),
               Card(
                 child: ListTile(
-                  onTap: () {
-
+                  onTap: () async {
+                    await Model.prefs!.setBool('login', false);
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Login();
+                      },
+                    ));
                   },
-                  title: Text("Setting",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                  leading: Icon(Icons.settings,color: Colors.black),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                      return Login();
-                    },));
-                  },
-                  title: Text("Log Out",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                  leading: Icon(Icons.logout,color: Colors.black),
+                  title: Text(
+                    "Log Out",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  leading: Icon(Icons.logout, color: Colors.black),
                 ),
               ),
             ],
           ),
         ),
         appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  await Model.prefs!.setBool('login', false);
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Login();
+                    },
+                  ));
+                },
+                icon: Icon(Icons.logout))
+          ],
           centerTitle: true,
           title: Text(
-            "Home Page",
+            "Update",
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19),
           ),
@@ -190,6 +210,7 @@ class _homeState extends State<home> {
                     }
                   },
                   controller: name,
+                  autofocus: false,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.sentences,
                   style: TextStyle(color: Color(0xff040065)),
@@ -270,6 +291,8 @@ class _homeState extends State<home> {
               ),
               InkWell(
                 onTap: () async {
+                  // Haptic Feedback for Success
+                  Haptic.onSuccess();
                   String Name = name.text;
                   String Email = email.text;
                   String Contact = contact.text;
@@ -327,13 +350,20 @@ class _homeState extends State<home> {
                       int result = map['result'];
 
                       if (result == 1) {
+                        Map data = map['data'];
+                        setState(() {
+                          NAME = data['name'];
+                        });
                         AwesomeDialog(
                           context: context,
                           dialogType: DialogType.success,
                           animType: AnimType.bottomSlide,
                           title: 'Updated',
                           desc: 'Name Updated Successfully',
-                          btnOkOnPress: () {},
+                          btnOkOnPress: () {
+                            // Haptic Feedback for Success
+                            Haptic.onSuccess();
+                          },
                         )..show();
                       }
                     }
@@ -361,6 +391,27 @@ class _homeState extends State<home> {
                   ),
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(top: 10, left: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "If no Change ? them Press ",
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Home",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff0b00ff),
+                              fontWeight: FontWeight.bold),
+                        )),
+                  ],
+                ),
+              )
             ],
           ),
         ),

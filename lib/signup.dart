@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_haptic/haptic.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -282,6 +283,8 @@ class _signupState extends State<signup> {
 
               InkWell(
                 onTap: () async {
+                  // Haptic Feedback for Success
+                  Haptic.onSuccess();
                   String Name = name.text;
                   String Phone = contact.text;
                   String Email = email.text;

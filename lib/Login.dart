@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:regestration_api/home.dart';
+import 'package:flutter_haptic/haptic.dart';
+import 'package:regestration_api/rename.dart';
 import 'package:regestration_api/model.dart';
 import 'package:regestration_api/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -135,6 +136,8 @@ class _LoginState extends State<Login> {
 
               InkWell(
                 onTap: () async {
+                  // Haptic Feedback for Success
+                  Haptic.onSuccess();
                   String username = Username.text;
                   String password = Password.text;
 
@@ -222,7 +225,7 @@ class _LoginState extends State<Login> {
                           await Model.prefs!.setString('Photo', imagepath);
 
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                            return home();
+                            return rename();
                           },));
                         }
                     }
@@ -231,7 +234,7 @@ class _LoginState extends State<Login> {
                 child: Container(
                   height: 50,
                   width: 120,
-                  margin: EdgeInsets.only(left: 120, right: 120, top: 10),
+                  margin: EdgeInsets.all(10),
                   alignment: Alignment.center,
                   decoration: ShapeDecoration(
                       color: Color(0xff040065),
