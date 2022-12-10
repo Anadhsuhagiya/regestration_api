@@ -46,19 +46,18 @@ class _splashState extends State<splash> {
         },
       ));
     }
-
-    else if(stat == 1)
-      {
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) {
-            return HOME();
-          },
-        ));
-      }
     else {
       Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
           return Login();
+        },
+      ));
+    }
+    if(stat == 1)
+    {
+      Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) {
+          return HOME();
         },
       ));
     }

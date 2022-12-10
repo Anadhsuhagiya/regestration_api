@@ -146,7 +146,7 @@ class _renameState extends State<rename> {
               Card(
                 child: ListTile(
                   onTap: () async {
-                    await Model.prefs!.setBool('login', false);
+                    await Model.prefs!.clear();
                     Navigator.pushReplacement(context, MaterialPageRoute(
                       builder: (context) {
                         return Login();
@@ -167,7 +167,7 @@ class _renameState extends State<rename> {
           actions: [
             IconButton(
                 onPressed: () async {
-                  await Model.prefs!.setBool('login', false);
+                  await Model.prefs!.clear();
                   Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) {
                       return Login();
@@ -405,6 +405,7 @@ class _renameState extends State<rename> {
                     TextButton(
                         onPressed: () async {
                           await Model.prefs!.setInt('home', 1);
+                          print(Model.prefs!.getInt('home'));
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                             return HOME();
                           },));

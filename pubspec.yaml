@@ -45,6 +45,9 @@ dependencies:
   awesome_dialog:
   shared_preferences:
   flutter_haptic:
+  eva_icons_flutter:
+  shimmer:
+  rotated_corner_decoration:
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +90,10 @@ flutter:
   assets:
     - image/
   # fonts:
+  fonts:
+    - family: LUCIDA
+      fonts:
+        - asset: fonts/Lucida Fax Regular.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
