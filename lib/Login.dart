@@ -75,8 +75,8 @@ class _LoginState extends State<Login> {
                             borderSide:
                             BorderSide(color: Color(0xff040065), width: 3)),
                         border: OutlineInputBorder(),
-                        hintText: "Enter Email Address",
-                        labelText: "Email",
+                        hintText: "Enter Username",
+                        labelText: "Username",
                         labelStyle: TextStyle(color: Color(0xff040065)),
                         errorText: emailerror ? emailmsg : null,
                         prefixIcon: Icon(

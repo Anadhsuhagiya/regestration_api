@@ -416,7 +416,7 @@ class _Add_ProductState extends State<Add_Product> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                   child: Text(
-                    "SignUp",
+                    "Add",
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),

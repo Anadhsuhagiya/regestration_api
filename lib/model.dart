@@ -16,4 +16,6 @@ class Model
     "Books",
   ];
 
+  static bool splash_data = false;
+
 }

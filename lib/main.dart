@@ -66,9 +66,21 @@ class _splashState extends State<splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Lottie.network(
-            'https://assets9.lottiefiles.com/packages/lf20_tll0j4bb.json'),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Color(0xff19002a),
+              Color(0xff400069),
+            ],
+          ),
+        ),
+        child: Center(
+          child: Lottie.network(
+              'https://assets1.lottiefiles.com/packages/lf20_5ngs2ksb.json'),
+        ),
       ),
     );
   }

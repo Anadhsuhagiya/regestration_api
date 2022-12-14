@@ -427,7 +427,7 @@ class _signupState extends State<signup> {
                   }
                 }
 
-                  //http for small data send to php file
+                  // http for small data send to php file
                   // var url = Uri.parse(link);
                   // var response = await http.post(url, body: m);
                   //

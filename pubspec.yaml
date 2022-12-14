@@ -48,6 +48,10 @@ dependencies:
   eva_icons_flutter:
   shimmer:
   rotated_corner_decoration:
+  fluttericon:
+  signed_spacing_flex:
+  flutter_face_pile:
+  overlay_group_avatar:
 
 dev_dependencies:
   flutter_test:
