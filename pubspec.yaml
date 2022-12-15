@@ -52,6 +52,9 @@ dependencies:
   signed_spacing_flex:
   flutter_face_pile:
   overlay_group_avatar:
+  percent_indicator:
+  intl:
+  razorpay_flutter:
 
 dev_dependencies:
   flutter_test:

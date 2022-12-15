@@ -7,6 +7,7 @@ import 'package:getwidget/components/avatar/gf_avatar.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:overlay_group_avatar/overlay_group_avatar.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:regestration_api/Product_details.dart';
 import 'package:regestration_api/add_product.dart';
 import 'package:regestration_api/rename.dart';
@@ -78,6 +79,7 @@ class _HOMEState extends State<HOME> {
         }
       });
     });
+
     print(Model.prefs!.getBool('login'));
 
     ID = Model.prefs!.getString('id') ?? "";
@@ -126,33 +128,65 @@ class _HOMEState extends State<HOME> {
                       accountName: Text("$NAME"),
                       currentAccountPicture: Container(
                         decoration: BoxDecoration(
-                            border: Border.all(width: 3, color: Colors.white),
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: NetworkImage(IMAGEurl),
-                              fit: BoxFit.fill,
-                              errorBuilder:
-                                  (context, Object exception, StackTrace) {
-                                return const Icon(
-                                    Icons.supervised_user_circle_rounded);
-                              },
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                        ? loadingProgress
-                                        .cumulativeBytesLoaded /
-                                        (loadingProgress
-                                            .expectedTotalBytes ??
-                                            0)
-                                        : null,
-                                  ),
-                                );
-                              },
-                            )),
+                          border: Border.all(width: 3, color: Colors.white),
+                          shape: BoxShape.circle,
+                          // image: DecorationImage(
+                          //   image: NetworkImage(IMAGEurl),
+                          //   fit: BoxFit.fill,
+                          //   onError: (exception, stackTrace) {
+                          //     Icon(Icons.supervised_user_circle_rounded);
+                          //   },
+
+                          // )
+                        ),
+                        child: ClipOval(
+                          child: Image.network(
+                            IMAGEurl,
+                            fit: BoxFit.fill,
+                            errorBuilder:
+                                (context, Object exception, StackTrace) {
+                              return const Icon(
+                                  Icons.supervised_user_circle_rounded,size: 20,color: Colors.white,);
+                            },
+                            loadingBuilder:
+                                (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child:
+                                // CircularPercentIndicator(
+                                //   radius: 20.0,
+                                //   lineWidth: 4.0,
+                                //   animation: true,
+                                //   restartAnimation: false,
+                                //   percent: percent/100,
+                                //   center: Text(
+                                //     percent.toString() + "%",
+                                //     style: TextStyle(
+                                //         fontSize: 7.0,
+                                //         fontWeight: FontWeight.w600,
+                                //         color: Colors.white),
+                                //   ),
+                                //   backgroundColor: Colors.black,
+                                //   circularStrokeCap: CircularStrokeCap.round,
+                                //   progressColor: Colors.white,
+                                // )
+                                CircularProgressIndicator(
+                                  color: Color(0xffffffff),
+                                  backgroundColor: Color(0xff430257),
+                                  value: loadingProgress.expectedTotalBytes !=
+                                      null
+                                      ? loadingProgress
+                                      .cumulativeBytesLoaded /
+                                      (loadingProgress
+                                          .expectedTotalBytes ??
+                                          0)
+                                      : null,
+
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                       otherAccountsPictures: [
                         OverlapAvatar(
@@ -234,7 +268,7 @@ class _HOMEState extends State<HOME> {
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return View_Product();
+                            return HOME();
                           },
                         ));
                       },
