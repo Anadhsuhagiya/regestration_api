@@ -9,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import 'package:overlay_group_avatar/overlay_group_avatar.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:regestration_api/Product_details.dart';
+import 'package:regestration_api/add_cart.dart';
 import 'package:regestration_api/add_product.dart';
 import 'package:regestration_api/rename.dart';
 import 'package:regestration_api/view_product.dart';
@@ -377,7 +378,10 @@ class _HOMEState extends State<HOME> {
                 ),
               ),
               stat
-                  ? ListView.builder(
+                  ? Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
                       itemCount: l.length,
                       itemBuilder: (context, index) {
                         int a = int.parse(l[index].pRICE);
@@ -397,7 +401,7 @@ class _HOMEState extends State<HOME> {
                               foregroundDecoration: RotatedCornerDecoration(
                                 color: Color(0xffc40000),
                                 geometry:
-                                    const BadgeGeometry(width: 48, height: 48),
+                                const BadgeGeometry(width: 48, height: 48),
                                 textSpan: const TextSpan(
                                   text: 'off\n10%',
                                   style: TextStyle(
@@ -450,7 +454,43 @@ class _HOMEState extends State<HOME> {
                           ),
                         );
                       },
-                    )
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return cart();
+                      },));
+                    },
+                    child: Container(
+                      height: 60,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: ShapeDecoration(
+                          color: Color(0xff730586).withOpacity(0.5),
+                          shadows: [
+                            BoxShadow(
+                                blurRadius: 7,
+                                spreadRadius: 1,
+                                offset: Offset(0, 3),
+                                color: Colors.black.withOpacity(0.4))
+                          ],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_shopping_cart_outlined,color: Colors.white,),
+                          Text(
+                            "    Cart",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )
                   : Center(
                       child: CircularProgressIndicator(
                         color: Color(0xffffffff),

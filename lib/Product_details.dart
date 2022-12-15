@@ -87,7 +87,8 @@ class _Product_detailsState extends State<Product_details> {
                   'https://assets1.lottiefiles.com/packages/lf20_5ngs2ksb.json'),
             ),
           ),
-          Column(
+          SingleChildScrollView(
+            child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(14.0),
@@ -112,7 +113,9 @@ class _Product_detailsState extends State<Product_details> {
                         fontSize: 14,
                         letterSpacing: 1,
                         fontWeight: FontWeight.bold,
-                        shadows: [BoxShadow(color: Colors.white, blurRadius: 4)],
+                        shadows: [
+                          BoxShadow(color: Colors.white, blurRadius: 4)
+                        ],
                       ),
                     ),
                   ),
@@ -168,7 +171,9 @@ class _Product_detailsState extends State<Product_details> {
                                       height: 45,
                                       width: 45,
                                       alignment: Alignment.center,
-                                      child: CircularProgressIndicator(color: Colors.black,),
+                                      child: CircularProgressIndicator(
+                                        color: Colors.black,
+                                      ),
                                     ),
                                     title: Text(
                                       "Please Wait ...",
@@ -184,7 +189,8 @@ class _Product_detailsState extends State<Product_details> {
                           },
                         );
 
-                        String link = 'https://flutteranadh.000webhostapp.com/cart.php';
+                        String link =
+                            'https://flutteranadh.000webhostapp.com/cart.php';
 
                         Map map = {
                           'pro_name': Name,
@@ -210,28 +216,28 @@ class _Product_detailsState extends State<Product_details> {
                           print("Result :- $result");
                           if (result == 0) {
                             print("Try Again");
-                          }
-                          else if(result == 1)
-                          {
+                          } else if (result == 1) {
                             AwesomeDialog(
                               context: context,
                               dialogType: DialogType.success,
                               animType: AnimType.bottomSlide,
                               title: 'Product Added Successfully',
-                              desc: 'Your Product has been added to cart successfully...',
+                              desc:
+                                  'Your Product has been added to cart successfully...',
                               btnOkOnPress: () {
                                 // Haptic Feedback for Success
                                 Haptic.onSuccess();
 
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                                  return cart();
-                                },));
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(
+                                  builder: (context) {
+                                    return cart();
+                                  },
+                                ));
                               },
                             )..show();
-
                           }
                         }
-
                       },
                       child: Container(
                         height: 50,
@@ -258,98 +264,19 @@ class _Product_detailsState extends State<Product_details> {
                   ],
                 ),
                 Center(
-                  child: Stack(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Positioned(
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          height: 45,
-                          width: 95,
-                          alignment: Alignment.center,
-                          decoration: ShapeDecoration(
-                              color: Color(0xff9103a9).withOpacity(0.5),
-                              shadows: [
-                                BoxShadow(
-                                    blurRadius: 7,
-                                    spreadRadius: 1,
-                                    offset: Offset(0, 3),
-                                    color: Colors.black.withOpacity(0.5))
-                              ],
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)))),
-                          child: Text(
-                            "$i",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: -10,top: 7,
-                        child: InkWell(
-                          onTap: () {
-                            if(i > 0 && i <= 100)
-                              {
-                                  i = i - 1;
-                                  if(i==0){
-                                    i=1;
-                                  }
-                              }
-                            else
-                              {
-                                i = 1;
-                              }
-                            setState(() {
-
-                            });
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(10),
-                            height: 30,
-                            width: 30,
-                            alignment: Alignment.center,
-                            decoration: ShapeDecoration(
-                                color: Color(0xff730586).withOpacity(0.9),
-                                shadows: [
-                                  BoxShadow(
-                                      blurRadius: 7,
-                                      spreadRadius: 1,
-                                      offset: Offset(0, 3),
-                                      color: Colors.black.withOpacity(0.5))
-                                ],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(60)))),
-                            child: Icon(Typicons.minus,color: Colors.white,)
-                          ),
-                        ),
-                      ),// minus
-                      Positioned(
-                        right: -10,top: 7,
-                        child: InkWell(
-                          onTap: () {
-                            if(i > 0 && i <= 100)
-                            {
-                                i = i + 1;
-                            }
-                            else
-                            {
-                              i = 1;
-                            }
-                            setState(() {
-
-                            });
-                          },
-                          child: Container(
+                      Stack(
+                        children: [
+                          Positioned(
+                            child: Container(
                               margin: EdgeInsets.all(10),
-                              height: 30,
-                              width: 30,
+                              height: 45,
+                              width: 95,
                               alignment: Alignment.center,
                               decoration: ShapeDecoration(
-                                  color: Color(0xff730586).withOpacity(0.9),
+                                  color: Color(0xff9103a9).withOpacity(0.5),
                                   shadows: [
                                     BoxShadow(
                                         blurRadius: 7,
@@ -358,17 +285,160 @@ class _Product_detailsState extends State<Product_details> {
                                         color: Colors.black.withOpacity(0.5))
                                   ],
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(60)))),
-                              child: Icon(Icons.add,color: Colors.white,)
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15)))),
+                              child: Text(
+                                "$i",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            left: -10,
+                            top: 7,
+                            child: InkWell(
+                              onTap: () {
+                                if (i > 0 && i <= 100) {
+                                  i = i - 1;
+                                  if (i == 0) {
+                                    i = 1;
+                                  }
+                                } else {
+                                  i = 1;
+                                }
+                                setState(() {});
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  height: 30,
+                                  width: 30,
+                                  alignment: Alignment.center,
+                                  decoration: ShapeDecoration(
+                                      color: Color(0xff730586).withOpacity(0.9),
+                                      shadows: [
+                                        BoxShadow(
+                                            blurRadius: 7,
+                                            spreadRadius: 1,
+                                            offset: Offset(0, 3),
+                                            color:
+                                                Colors.black.withOpacity(0.5))
+                                      ],
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(60)))),
+                                  child: Icon(
+                                    Typicons.minus,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ), // minus
+                          Positioned(
+                            right: -10,
+                            top: 7,
+                            child: InkWell(
+                              onTap: () {
+                                if (i > 0 && i <= 100) {
+                                  i = i + 1;
+                                } else {
+                                  i = 1;
+                                }
+                                setState(() {});
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  height: 30,
+                                  width: 30,
+                                  alignment: Alignment.center,
+                                  decoration: ShapeDecoration(
+                                      color: Color(0xff730586).withOpacity(0.9),
+                                      shadows: [
+                                        BoxShadow(
+                                            blurRadius: 7,
+                                            spreadRadius: 1,
+                                            offset: Offset(0, 3),
+                                            color:
+                                                Colors.black.withOpacity(0.5))
+                                      ],
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(60)))),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ), // Plus
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            backgroundColor: Color(0xff2e0236).withOpacity(0.9),
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(20),
+                                height: 400,
+                                width: double.infinity,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "🎉 Description 🎉",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 0.8),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Text(
+                                        "$Description",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            letterSpacing: 0.8),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 140,
+                          margin: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          decoration: ShapeDecoration(
+                              color: Color(0xff730586).withOpacity(0.5),
+                              shadows: [
+                                BoxShadow(
+                                    blurRadius: 7,
+                                    spreadRadius: 1,
+                                    offset: Offset(0, 3),
+                                    color: Colors.black.withOpacity(0.4))
+                              ],
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: Text(
+                            "Description",
+                            style: TextStyle(color: Colors.white, fontSize: 17),
                           ),
                         ),
-                      ), // Plus
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
+          ),
         ],
       ),
     );

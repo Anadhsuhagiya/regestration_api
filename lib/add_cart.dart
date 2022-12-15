@@ -7,6 +7,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:regestration_api/HOME.dart';
 
 class cart extends StatefulWidget {
   @override
@@ -150,7 +152,23 @@ class _cartState extends State<cart> {
                   print("Payment :- $TotalPay");
 
                   //Payments
-
+                  Razorpay razorpay = Razorpay();
+                  var options = {
+                    'key': 'rzp_test_HmbbQaUAmNwVWO',
+                    'amount': TotalPay * 100,
+                    'name': 'Anadh',
+                    'description': 'Fine T-Shirt',
+                    'retry': {'enabled': true, 'max_count': 3},
+                    'send_sms_hash': true,
+                    'prefill': {'contact': '8160011080', 'email': 'anadhsuhagiya65@gmail.com'},
+                    'external': {
+                      'wallets': ['paytm'],
+                    }
+                  };
+                  razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
+                  razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
+                  razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
+                  razorpay.open(options);
 
                 },
                 child: Container(
@@ -183,6 +201,57 @@ class _cartState extends State<cart> {
           ),
         ],
       )
+    );
+  }
+
+  void handlePaymentErrorResponse(PaymentFailureResponse response){
+    /*
+    * PaymentFailureResponse contains three values:
+    * 1. Error Code
+    * 2. Error Description
+    * 3. Metadata
+    * */
+    showAlertDialog(context, "Payment Failed", "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
+  }
+
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response){
+    /*
+    * Payment Success Response contains three values:
+    * 1. Order ID
+    * 2. Payment ID
+    * 3. Signature
+    * */
+    showAlertDialog(context, "Payment Successful", "Payment ID: ${response.paymentId}");
+  }
+
+  void handleExternalWalletSelected(ExternalWalletResponse response){
+    showAlertDialog(context, "External Wallet Selected", "${response.walletName}");
+  }
+
+  void showAlertDialog(BuildContext context, String title, String message){
+    // set up the buttons
+    Widget continueButton = ElevatedButton(
+      child: const Text("Continue"),
+      onPressed:  () {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+          return HOME();
+        },));
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
