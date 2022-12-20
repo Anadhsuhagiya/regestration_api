@@ -147,42 +147,41 @@ class _HOMEState extends State<HOME> {
                             errorBuilder:
                                 (context, Object exception, StackTrace) {
                               return const Icon(
-                                  Icons.supervised_user_circle_rounded,size: 20,color: Colors.white,);
+                                Icons.supervised_user_circle_rounded,
+                                size: 20,
+                                color: Colors.white,
+                              );
                             },
-                            loadingBuilder:
-                                (context, child, loadingProgress) {
+                            loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
                               return Center(
                                 child:
-                                // CircularPercentIndicator(
-                                //   radius: 20.0,
-                                //   lineWidth: 4.0,
-                                //   animation: true,
-                                //   restartAnimation: false,
-                                //   percent: percent/100,
-                                //   center: Text(
-                                //     percent.toString() + "%",
-                                //     style: TextStyle(
-                                //         fontSize: 7.0,
-                                //         fontWeight: FontWeight.w600,
-                                //         color: Colors.white),
-                                //   ),
-                                //   backgroundColor: Colors.black,
-                                //   circularStrokeCap: CircularStrokeCap.round,
-                                //   progressColor: Colors.white,
-                                // )
-                                CircularProgressIndicator(
+                                    // CircularPercentIndicator(
+                                    //   radius: 20.0,
+                                    //   lineWidth: 4.0,
+                                    //   animation: true,
+                                    //   restartAnimation: false,
+                                    //   percent: percent/100,
+                                    //   center: Text(
+                                    //     percent.toString() + "%",
+                                    //     style: TextStyle(
+                                    //         fontSize: 7.0,
+                                    //         fontWeight: FontWeight.w600,
+                                    //         color: Colors.white),
+                                    //   ),
+                                    //   backgroundColor: Colors.black,
+                                    //   circularStrokeCap: CircularStrokeCap.round,
+                                    //   progressColor: Colors.white,
+                                    // )
+                                    CircularProgressIndicator(
                                   color: Color(0xffffffff),
                                   backgroundColor: Color(0xff430257),
                                   value: loadingProgress.expectedTotalBytes !=
-                                      null
-                                      ? loadingProgress
-                                      .cumulativeBytesLoaded /
-                                      (loadingProgress
-                                          .expectedTotalBytes ??
-                                          0)
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          (loadingProgress.expectedTotalBytes ??
+                                              0)
                                       : null,
-
                                 ),
                               );
                             },
@@ -379,118 +378,129 @@ class _HOMEState extends State<HOME> {
               ),
               stat
                   ? Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: l.length,
-                      itemBuilder: (context, index) {
-                        int a = int.parse(l[index].pRICE);
-                        var Discount = a - ((a * 10) / 100);
-                        return InkWell(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: l.length,
+                            itemBuilder: (context, index) {
+                              int a = int.parse(l[index].pRICE);
+                              var Discount = a - ((a * 10) / 100);
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return Product_details(
+                                          l[index], Discount);
+                                    },
+                                  ));
+                                },
+                                child: Card(
+                                  color: Color(0xff550077).withOpacity(0.2),
+                                  shadowColor: Color(0xff4d4d4d),
+                                  child: Container(
+                                    foregroundDecoration:
+                                        RotatedCornerDecoration(
+                                      color: Color(0xffc40000),
+                                      geometry: const BadgeGeometry(
+                                          width: 48, height: 48),
+                                      textSpan: const TextSpan(
+                                        text: 'off\n10%',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          letterSpacing: 1,
+                                          fontWeight: FontWeight.bold,
+                                          shadows: [
+                                            BoxShadow(
+                                                color: Colors.white,
+                                                blurRadius: 4)
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    child: ListTile(
+                                      title: Text(
+                                        l[index].pRODUCTNAME,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(
+                                        "₹ ${l[index].pRICE}",
+                                        style: TextStyle(
+                                            color: Color(0xffd3d3d3),
+                                            fontSize: 16,
+                                            decoration:
+                                                TextDecoration.lineThrough),
+                                      ),
+                                      leading: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: ShapeDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    'https://flutteranadh.000webhostapp.com/${l[index].pHOTO}'),
+                                                fit: BoxFit.fill),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)))),
+                                      ),
+                                      trailing: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          "₹ $Discount",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        InkWell(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
-                                return Product_details(l[index], Discount);
+                                return cart();
                               },
                             ));
                           },
-                          child: Card(
-                            color: Color(0xff550077).withOpacity(0.2),
-                            shadowColor: Color(0xff4d4d4d),
-                            child: Container(
-                              foregroundDecoration: RotatedCornerDecoration(
-                                color: Color(0xffc40000),
-                                geometry:
-                                const BadgeGeometry(width: 48, height: 48),
-                                textSpan: const TextSpan(
-                                  text: 'off\n10%',
+                          child: Container(
+                            height: 60,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            decoration: ShapeDecoration(
+                                color: Color(0xff730586).withOpacity(0.5),
+                                shadows: [
+                                  BoxShadow(
+                                      blurRadius: 7,
+                                      spreadRadius: 1,
+                                      offset: Offset(0, 3),
+                                      color: Colors.black.withOpacity(0.4))
+                                ],
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_shopping_cart_outlined,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "    Cart",
                                   style: TextStyle(
-                                    fontSize: 10,
-                                    letterSpacing: 1,
-                                    fontWeight: FontWeight.bold,
-                                    shadows: [
-                                      BoxShadow(
-                                          color: Colors.white, blurRadius: 4)
-                                    ],
-                                  ),
+                                      color: Colors.white, fontSize: 20),
                                 ),
-                              ),
-                              child: ListTile(
-                                title: Text(
-                                  l[index].pRODUCTNAME,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                  "₹ ${l[index].pRICE}",
-                                  style: TextStyle(
-                                      color: Color(0xffd3d3d3),
-                                      fontSize: 16,
-                                      decoration: TextDecoration.lineThrough),
-                                ),
-                                leading: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: ShapeDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://flutteranadh.000webhostapp.com/${l[index].pHOTO}'),
-                                          fit: BoxFit.fill),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)))),
-                                ),
-                                trailing: Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Text(
-                                    "₹ $Discount",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
+                              ],
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return cart();
-                      },));
-                    },
-                    child: Container(
-                      height: 60,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      decoration: ShapeDecoration(
-                          color: Color(0xff730586).withOpacity(0.5),
-                          shadows: [
-                            BoxShadow(
-                                blurRadius: 7,
-                                spreadRadius: 1,
-                                offset: Offset(0, 3),
-                                color: Colors.black.withOpacity(0.4))
-                          ],
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add_shopping_cart_outlined,color: Colors.white,),
-                          Text(
-                            "    Cart",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
+                        ),
+                      ],
+                    )
                   : Center(
                       child: CircularProgressIndicator(
                         color: Color(0xffffffff),

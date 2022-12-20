@@ -402,13 +402,13 @@ class _Add_ProductState extends State<Add_Product> {
                               btnOkOnPress: () {
                                 // Haptic Feedback for Success
                                 Haptic.onSuccess();
-
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                  return HOME();
+                                },));
 
                               },
                             )..show();
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                                return HOME();
-                              },));
+
                             }
                           }
 

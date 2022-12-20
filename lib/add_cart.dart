@@ -17,6 +17,7 @@ class cart extends StatefulWidget {
 
 class _cartState extends State<cart> {
   bool status = false;
+  bool data = false;
   List l = [];
   String photoLink = "https://flutteranadh.000webhostapp.com/";
   int TotalPay = 0;
@@ -38,204 +39,324 @@ class _cartState extends State<cart> {
     if (response.statusCode == 200) {
       Map map = jsonDecode(response.body);
 
-      User user = User.fromJson(map);
+      int result = map['result'];
+      print("Result :- $result");
 
-      l = user.data!;
+      if(result == 1)
+        {
+          User user = User.fromJson(map);
 
-      print("Map : $map");
+          l = user.data!;
 
-      setState(() {
-        status = true;
-      });
-      print(status);
+          print("Map : $map");
+
+          setState(() {
+            status = true;
+            data = true;
+          });
+          print(status);
+        }
+      else if(result == 2)
+        {
+          setState(() {
+            status = true;
+            data = false;
+          });
+        }
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xff480070).withOpacity(0.25),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Cart",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            "Cart",
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19),
+          ),
+          backgroundColor: Color(0xff160021),
         ),
-        backgroundColor: Color(0xff160021),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            // decoration: BoxDecoration(
-            //     image: DecorationImage(
-            //         image: AssetImage(
-            //             'image/12922e803053151f09f1eb99248579c7.jpg'),
-            //         opacity: 200,
-            //         fit: BoxFit.cover)),
-            child: Opacity(
-              opacity: 0.15,
-              child: Lottie.network(
-                  'https://assets1.lottiefiles.com/packages/lf20_5ngs2ksb.json'),
-            ),
-          ),
-          status
-              ? Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: l.length,
-                  itemBuilder: (context, index) {
-
-                    double Total = double.parse(l[index].proDiscount) * double.parse(l[index].item);
-                    MyRound = Total.round();
-                    String total = MyRound.toString();
-                    TotalPay = TotalPay + MyRound;
-                    print(TotalPay);
-
-                    return Card(
-                      color: Color(0xff550077).withOpacity(0.2),
-                      shadowColor: Color(0xff4d4d4d),
-                      child: ListTile(
-                        title: Text(
-                          "${l[index].proName}",
-                          style: TextStyle(fontSize: 23,color: Colors.white,fontWeight: FontWeight.bold),
-                        ),
-                        leading: Container(
-                          height: 50,
-                          width: 50,
-                          padding: EdgeInsets.all(4),
-                          decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      '${photoLink}${l[index].proPhoto}'),
-                                  fit: BoxFit.fill)),
-                        ),
-                        trailing: IconButton(
-                            onPressed: () async {
-
-                            }, icon: Icon(Icons.delete_forever,color: Colors.grey,)),
-                        subtitle: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text("₹ ${l[index].proPrice}",style: TextStyle(decoration: TextDecoration.lineThrough,color: Colors.grey),),
-                                Text("   ₹ ${l[index].proDiscount}   ",style: TextStyle(color: Colors.white),),
-                                Text("  10% Off",style: TextStyle(color: Colors.white)),
-                              ],
-                            ),
-                            Row(mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("\nQty: ${l[index].item}",style: TextStyle(color: Colors.white)),
-                              ],
-                            ),
-                            Row(mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("₹ $total /-  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+        body: Stack(
+          children: [
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              // decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //         image: AssetImage(
+              //             'image/12922e803053151f09f1eb99248579c7.jpg'),
+              //         opacity: 200,
+              //         fit: BoxFit.cover)),
+              child: Opacity(
+                opacity: 0.15,
+                child: Lottie.network(
+                    'https://assets1.lottiefiles.com/packages/lf20_5ngs2ksb.json'),
               ),
-              InkWell(
-                onTap: () {
-                  print(l.length);
-                  print("Payment :- $TotalPay");
+            ),
+            status
+                ? (data
+                    ? Column(
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: l.length,
+                              itemBuilder: (context, index) {
+                                double Total =
+                                    double.parse(l[index].proDiscount) *
+                                        double.parse(l[index].item);
+                                MyRound = Total.round();
+                                String total = MyRound.toString();
+                                TotalPay = TotalPay + MyRound;
+                                print(TotalPay);
 
-                  //Payments
-                  Razorpay razorpay = Razorpay();
-                  var options = {
-                    'key': 'rzp_test_HmbbQaUAmNwVWO',
-                    'amount': TotalPay * 100,
-                    'name': 'Anadh',
-                    'description': 'Fine T-Shirt',
-                    'retry': {'enabled': true, 'max_count': 3},
-                    'send_sms_hash': true,
-                    'prefill': {'contact': '8160011080', 'email': 'anadhsuhagiya65@gmail.com'},
-                    'external': {
-                      'wallets': ['paytm'],
-                    }
-                  };
-                  razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
-                  razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
-                  razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
-                  razorpay.open(options);
+                                return Card(
+                                  color: Color(0xff550077).withOpacity(0.2),
+                                  shadowColor: Color(0xff4d4d4d),
+                                  child: ListTile(
+                                    title: Text(
+                                      "${l[index].proName}",
+                                      style: TextStyle(
+                                          fontSize: 23,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    leading: Container(
+                                      height: 50,
+                                      width: 50,
+                                      padding: EdgeInsets.all(4),
+                                      decoration: ShapeDecoration(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  '${photoLink}${l[index].proPhoto}'),
+                                              fit: BoxFit.fill)),
+                                    ),
+                                    trailing: IconButton(
+                                        onPressed: () async {
 
-                },
-                child: Container(
-                  height: 60,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: ShapeDecoration(
-                      color: Color(0xff730586).withOpacity(0.5),
-                      shadows: [
-                        BoxShadow(
-                            blurRadius: 7,
-                            spreadRadius: 1,
-                            offset: Offset(0, 3),
-                            color: Colors.black.withOpacity(0.4))
-                      ],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  child: Text(
-                    "Payment",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                          String Del_Pro_id = '${l[index].id}';
+                                          print('${l[index].id}');
+
+                                          String link =
+                                              "https://flutteranadh.000webhostapp.com/delete.php";
+
+                                          Map m = {
+                                            'id': Del_Pro_id,
+                                          };
+
+                                          var url = Uri.parse(link);
+                                          var response = await http.post(url, body: m);
+
+                                          print('Response status: ${response.statusCode}');
+
+                                          if (response.statusCode == 200) {
+                                            print("response : ${response.body}");
+                                            Map map = jsonDecode(response.body);
+
+                                            int result = map['result'];
+                                            print("result :- $result");
+                                            if (result == 1) {
+
+                                              Navigator.pushReplacement(context, MaterialPageRoute(
+                                                builder: (context) {
+                                                  return cart();
+                                                },
+                                              ));
+                                            }
+                                          }
+
+                                        },
+                                        icon: Icon(
+                                          Icons.delete_forever,
+                                          color: Colors.grey,
+                                        )),
+                                    subtitle: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "₹ ${l[index].proPrice}",
+                                              style: TextStyle(
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  color: Colors.grey),
+                                            ),
+                                            Text(
+                                              "   ₹ ${l[index].proDiscount}   ",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            Text("  10% Off",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text("\nQty: ${l[index].item}",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "₹ $total /-  ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25,
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              print(l.length);
+                              print("Payment :- $TotalPay");
+
+                              //Payments
+                              Razorpay razorpay = Razorpay();
+                              var options = {
+                                'key': 'rzp_test_HmbbQaUAmNwVWO',
+                                'amount': TotalPay * 100,
+                                'name': 'Anadh',
+                                'description': 'Fine T-Shirt',
+                                'retry': {'enabled': true, 'max_count': 3},
+                                'send_sms_hash': true,
+                                'prefill': {
+                                  'contact': '8160011080',
+                                  'email': 'anadhsuhagiya65@gmail.com'
+                                },
+                                'external': {
+                                  'wallets': ['paytm'],
+                                }
+                              };
+                              razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+                                  handlePaymentErrorResponse);
+                              razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+                                  handlePaymentSuccessResponse);
+                              razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+                                  handleExternalWalletSelected);
+                              razorpay.open(options);
+                            },
+                            child: Container(
+                              height: 60,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              decoration: ShapeDecoration(
+                                  color: Color(0xff730586).withOpacity(0.5),
+                                  shadows: [
+                                    BoxShadow(
+                                        blurRadius: 7,
+                                        spreadRadius: 1,
+                                        offset: Offset(0, 3),
+                                        color: Colors.black.withOpacity(0.4))
+                                  ],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              child: Text(
+                                "Payment",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Center(
+                        child: Text(
+                          "No Data Found",
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
+                      ))
+                : Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xffffffff),
+                    ),
                   ),
-                ),
-              ),
-            ],
-          )
-              : Center(
-            child: CircularProgressIndicator(
-              color: Color(0xffffffff),
-            ),
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 
-  void handlePaymentErrorResponse(PaymentFailureResponse response){
+  void handlePaymentErrorResponse(PaymentFailureResponse response) {
     /*
     * PaymentFailureResponse contains three values:
     * 1. Error Code
     * 2. Error Description
     * 3. Metadata
     * */
-    showAlertDialog(context, "Payment Failed", "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
+    showAlertDialog(context, "Payment Failed",
+        "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
   }
 
-  void handlePaymentSuccessResponse(PaymentSuccessResponse response){
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
     /*
     * Payment Success Response contains three values:
     * 1. Order ID
     * 2. Payment ID
     * 3. Signature
     * */
-    showAlertDialog(context, "Payment Successful", "Payment ID: ${response.paymentId}");
+    showAlertDialog(
+        context, "Payment Successful", "Payment ID: ${response.paymentId}");
   }
 
-  void handleExternalWalletSelected(ExternalWalletResponse response){
-    showAlertDialog(context, "External Wallet Selected", "${response.walletName}");
+  void handleExternalWalletSelected(ExternalWalletResponse response) {
+    showAlertDialog(
+        context, "External Wallet Selected", "${response.walletName}");
   }
 
-  void showAlertDialog(BuildContext context, String title, String message){
+  void showAlertDialog(BuildContext context, String title, String message) {
     // set up the buttons
     Widget continueButton = ElevatedButton(
       child: const Text("Continue"),
-      onPressed:  () {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-          return HOME();
-        },));
+      onPressed: () async {
+        String paymentDoneOrNot = 'Done';
+
+        String link =
+            "https://flutteranadh.000webhostapp.com/CartClear.php";
+
+        Map m = {
+          'DoneOrNot': paymentDoneOrNot,
+        };
+
+        var url = Uri.parse(link);
+        var response = await http.post(url, body: m);
+
+        print('Response status: ${response.statusCode}');
+
+        if (response.statusCode == 200) {
+          print("response : ${response.body}");
+          Map map = jsonDecode(response.body);
+
+          int result = map['result'];
+          print("result :- $result");
+          if (result == 1) {
+
+            Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) {
+                return HOME();
+              },
+            ));
+          }
+        }
+
+
       },
     );
     // set up the AlertDialog
@@ -315,4 +436,3 @@ class Data {
     return data;
   }
 }
-
