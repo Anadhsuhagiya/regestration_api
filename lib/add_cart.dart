@@ -10,6 +10,8 @@ import 'package:lottie/lottie.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:regestration_api/HOME.dart';
 
+import 'model.dart';
+
 class cart extends StatefulWidget {
   @override
   State<cart> createState() => _cartState();
@@ -31,8 +33,17 @@ class _cartState extends State<cart> {
   }
 
   Anadh() async {
-    var url = Uri.parse('https://flutteranadh.000webhostapp.com/get_cart.php');
-    var response = await http.get(url);
+    String cust_ID = Model.prefs!.getString('id') ?? "";
+    String link =
+        'https://flutteranadh.000webhostapp.com/get_cart.php';
+
+    Map map = {
+      'cust_ID': cust_ID,
+    };
+
+    // http for small data send to php file
+    var url = Uri.parse(link);
+    var response = await http.post(url, body: map);
 
     print("response :- $response");
 
@@ -97,7 +108,7 @@ class _cartState extends State<cart> {
               ),
             ),
             status
-                ? (data
+              ? (data
                     ? Column(
                         children: [
                           Expanded(
@@ -235,8 +246,7 @@ class _cartState extends State<cart> {
                               var options = {
                                 'key': 'rzp_test_HmbbQaUAmNwVWO',
                                 'amount': TotalPay * 100,
-                                'name': 'Anadh',
-                                'description': 'Fine T-Shirt',
+                                'name': 'Thank you !!',
                                 'retry': {'enabled': true, 'max_count': 3},
                                 'send_sms_hash': true,
                                 'prefill': {
@@ -407,6 +417,7 @@ class Data {
   String? proDiscount;
   String? proPhoto;
   String? item;
+  String? cust_ID;
 
   Data(
       {this.id,
@@ -414,7 +425,7 @@ class Data {
       this.proPrice,
       this.proDiscount,
       this.proPhoto,
-      this.item});
+      this.item,this.cust_ID});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -423,6 +434,7 @@ class Data {
     proDiscount = json['Pro_discount'];
     proPhoto = json['Pro_photo'];
     item = json['item'];
+    cust_ID = json['cust_ID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -433,6 +445,7 @@ class Data {
     data['Pro_discount'] = this.proDiscount;
     data['Pro_photo'] = this.proPhoto;
     data['item'] = this.item;
+    data['cust_ID'] = this.cust_ID;
     return data;
   }
 }

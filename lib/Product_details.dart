@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_haptic/haptic.dart';
 import 'package:lottie/lottie.dart';
 import 'package:regestration_api/add_cart.dart';
+import 'package:regestration_api/model.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttericon/typicons_icons.dart';
@@ -29,6 +30,7 @@ class _Product_detailsState extends State<Product_details> {
   String Description = "";
   double? Discount;
   int i = 1;
+  String cust_ID = "";
 
   @override
   void initState() {
@@ -43,6 +45,7 @@ class _Product_detailsState extends State<Product_details> {
     Price = widget.l.pRICE;
     Discount = widget.discount;
     Description = widget.l.dESCRIPTION;
+    cust_ID = Model.prefs!.getString('id') ?? "";
   }
 
   @override
@@ -157,111 +160,114 @@ class _Product_detailsState extends State<Product_details> {
                           decoration: TextDecoration.lineThrough,
                           fontSize: 18),
                     ),
-                    InkWell(
-                      onTap: () async {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return SimpleDialog(
-                              children: [
-                                Container(
-                                  height: 60,
-                                  child: ListTile(
-                                    leading: Container(
-                                      height: 45,
-                                      width: 45,
-                                      alignment: Alignment.center,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    title: Text(
-                                      "Please Wait ...",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
+                  ],
+                ),
+                Center(
+                  child: InkWell(
+                    onTap: () async {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SimpleDialog(
+                            children: [
+                              Container(
+                                height: 60,
+                                child: ListTile(
+                                  leading: Container(
+                                    height: 45,
+                                    width: 45,
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.black,
                                     ),
                                   ),
-                                )
-                              ],
-                            );
-                          },
-                        );
-
-                        String link =
-                            'https://flutteranadh.000webhostapp.com/cart.php';
-
-                        Map map = {
-                          'pro_name': Name,
-                          'pro_price': Price,
-                          'pro_inventory': i.toString(),
-                          'pro_discount': Discount.toString(),
-                          'pro_photo': Photo
-                        };
-
-                        // http for small data send to php file
-                        var url = Uri.parse(link);
-                        var response = await http.post(url, body: map);
-
-                        Navigator.pop(context);
-
-                        if (response.statusCode == 200) {
-                          print("Response : ${response.body}");
-
-                          Map map = jsonDecode(response.body);
-
-                          int result = map['result'];
-
-                          print("Result :- $result");
-                          if (result == 0) {
-                            print("Try Again");
-                          } else if (result == 1) {
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.success,
-                              animType: AnimType.bottomSlide,
-                              title: 'Product Added Successfully',
-                              desc:
-                                  'Your Product has been added to cart successfully...',
-                              btnOkOnPress: () {
-                                // Haptic Feedback for Success
-                                Haptic.onSuccess();
-
-                                Navigator.pushReplacement(context,
-                                    MaterialPageRoute(
-                                  builder: (context) {
-                                    return cart();
-                                  },
-                                ));
-                              },
-                            )..show();
-                          }
-                        }
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 140,
-                        margin: EdgeInsets.all(10),
-                        alignment: Alignment.center,
-                        decoration: ShapeDecoration(
-                            color: Color(0xff730586).withOpacity(0.5),
-                            shadows: [
-                              BoxShadow(
-                                  blurRadius: 7,
-                                  spreadRadius: 1,
-                                  offset: Offset(0, 3),
-                                  color: Colors.black.withOpacity(0.4))
+                                  title: Text(
+                                    "Please Wait ...",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              )
                             ],
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        child: Text(
-                          "Add To Cart",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
+                          );
+                        },
+                      );
+
+                      String link =
+                          'https://flutteranadh.000webhostapp.com/cart.php';
+
+                      Map map = {
+                        'pro_name': Name,
+                        'pro_price': Price,
+                        'pro_inventory': i.toString(),
+                        'pro_discount': Discount.toString(),
+                        'pro_photo': Photo,
+                        'cust_ID': cust_ID,
+                      };
+
+                      // http for small data send to php file
+                      var url = Uri.parse(link);
+                      var response = await http.post(url, body: map);
+
+                      Navigator.pop(context);
+
+                      if (response.statusCode == 200) {
+                        print("Response : ${response.body}");
+
+                        Map map = jsonDecode(response.body);
+
+                        int result = map['result'];
+
+                        print("Result :- $result");
+                        if (result == 0) {
+                          print("Try Again");
+                        } else if (result == 1) {
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.success,
+                            animType: AnimType.bottomSlide,
+                            title: 'Product Added Successfully',
+                            desc:
+                            'Your Product has been added to cart successfully...',
+                            btnOkOnPress: () {
+                              // Haptic Feedback for Success
+                              Haptic.onSuccess();
+
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return cart();
+                                    },
+                                  ));
+                            },
+                          )..show();
+                        }
+                      }
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 140,
+                      margin: EdgeInsets.all(10),
+                      alignment: Alignment.center,
+                      decoration: ShapeDecoration(
+                          color: Color(0xff730586).withOpacity(0.5),
+                          shadows: [
+                            BoxShadow(
+                                blurRadius: 7,
+                                spreadRadius: 1,
+                                offset: Offset(0, 3),
+                                color: Colors.black.withOpacity(0.4))
+                          ],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: Text(
+                        "Add To Cart",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
-                  ],
+                  ),
                 ),
                 Center(
                   child: Row(

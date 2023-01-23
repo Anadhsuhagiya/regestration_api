@@ -55,6 +55,7 @@ dependencies:
   percent_indicator:
   intl:
   razorpay_flutter:
+  google_mobile_ads:
 
 dev_dependencies:
   flutter_test:
